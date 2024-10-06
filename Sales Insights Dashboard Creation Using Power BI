@@ -1,0 +1,81 @@
+Sales Insights Dashboard Creation Using Power BI
+
+#### **Overview:**
+The **Sales Insights Dashboard** was created using Power BI to provide a comprehensive view of the company's sales performance. This dashboard allows stakeholders to analyze key sales metrics such as total sales, average sales, maximum sales, and sales percentages. The dashboard also includes insights into sales performance by region, product, and sales channel, enabling informed decision-making.
+
+#### **Key DAX Functions Used:**
+
+1. **SUMX**:
+   - **Purpose**: To calculate the **total sales** by summing up the `TotalSales` column in the dataset.
+   - **Formula**: `Total_of_Sales = SUMX(Sales_data, Sales_data[TotalSales])`
+
+2. **AVERAGEX**:
+   - **Purpose**: To calculate the **average sales** across different sales transactions.
+   - **Formula**: `Average_Sales = AVERAGEX(Sales_data, Sales_data[TotalSales])`
+
+3. **MAXX**:
+   - **Purpose**: To find the **maximum sales** value in the dataset.
+   - **Formula**: `Max_Sales = MAXX(Sales_data, Sales_data[TotalSales])`
+
+4. **RANKX**:
+   - **Purpose**: To rank regions based on their total sales performance.
+   - **Formula**: `Rank_Region = RANKX(ALL(Sales_data[Region]), [Total_of_Sales], , DESC)`
+
+5. **LOOKUPVALUE**:
+   - **Purpose**: To retrieve product names based on their ProductID and associate them with their corresponding total sales.
+   - **Formula**: `Product_Name_Lookup = LOOKUPVALUE(Products[ProductName], Products[ProductID], Sales_data[ProductID])`
+
+6. **ALLEXCEPT**:
+   - **Purpose**: To calculate total sales for all products except the current product's category, providing insights into the category-level sales performance.
+   - **Formula**: `Sales_by_Category = CALCULATE([Total_of_Sales], ALLEXCEPT(Products, Products[Category]))`
+
+7. **DATESYTD**:
+   - **Purpose**: To calculate the year-to-date sales up to March 31st, providing cumulative sales trends by month.
+   - **Formula**: `Sales_YTD = CALCULATE(SUM(Sales_data[TotalSales]), DATESYTD('Calendar'[Date], "3/31"))`
+
+8. **MAX Sales%**:
+   - **Purpose**: To calculate the maximum percentage of sales.
+   - **Formula**: `Max_Sales_Percentage = DIVIDE([Total_of_Sales], [Percentage_of_Sales])`
+
+9. **Percentage of Sales**:
+   - **Purpose**: To calculate the percentage of total sales across all sales channels.
+   - **Formula**: `Percentage_of_Sales = CALCULATE(SUM(Sales_data[TotalSales]), ALL(Sales_data[SalesChannel]))`
+
+10. **Percentage_Calc**:
+    - **Purpose**: To ensure division operations return 0 instead of errors for undefined values.
+    - **Formula**: `Percentage_Calc = DIVIDE([Total_of_Sales], [Percentage_of_Sales], 0)`
+
+#### **Dashboard Visualizations:**
+
+1. **Cards for Max, Total, and Average Sales**:
+   - **Description**: These cards display the **maximum**, **total**, and **average sales** across all sales transactions, providing high-level insights at a glance.
+   - **Purpose**: To provide stakeholders with quick insights into key sales figures.
+
+2. **Waterfall Graph for Total Sales by SalesChannel and ProductName**:
+   - **Description**: A **waterfall chart** that breaks down the total sales by sales channel and product name.
+   - **Purpose**: To visually track how each sales channel and product contributes to the overall sales.
+
+3. **Cumulative Bar Graph for DATESYTD by Month**:
+   - **Description**: This graph shows **year-to-date sales trends** on a monthly basis, allowing users to observe the cumulative progression of sales.
+   - **Purpose**: To analyze cumulative sales growth throughout the year.
+
+4. **Donut Chart for Total Sales and Lookup Value by Category and ProductID**:
+   - **Description**: The **donut chart** presents total sales across product categories, enhanced with a lookup for product IDs.
+   - **Purpose**: To compare the contribution of different product categories to total sales.
+
+5. **Cumulative Bar Graph for Total Sales by Region**:
+   - **Description**: A **bar graph** that aggregates total sales for each region.
+   - **Purpose**: To compare sales performance across different regions.
+
+6. **Table for Percentage of Sales on Total Sales across Sales Channel**:
+   - **Description**: A table showcasing the **percentage contribution of sales** for each sales channel.
+   - **Purpose**: To identify how each channel contributes to the total sales percentage.
+
+7. **Table for Category, Sum of Total Sales, All Except Sales, Product Name**:
+   - **Description**: This table presents the **total sales** by product category, excluding other product categories using the `ALLEXCEPT` DAX function.
+   - **Purpose**: To evaluate sales performance within specific categories and products.
+
+8. **Table for Rank According to Region Sales**:
+   - **Description**: A table that ranks regions according to their total sales performance using the `RANKX` function.
+   - **Purpose**: To determine which regions are performing the best based on their total sales.
+
